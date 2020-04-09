@@ -263,7 +263,7 @@ CSV supports any printable character when it is inside the double quotes. When t
 
 Example:
 
-> `Baguinon,Elizalde,Gonzales,45,"40.730610,-73.935242"`
+> `Collier,Norton,Johnston,45,"40.730610,-73.935242"`
 
 #### Other Posibilities
     
@@ -274,11 +274,11 @@ A schema could be an array. Multiple entries are separated by *carriage returns*
 Example:
 
 ```
-    Baguinon,Elizalde,Gonzales,45, "Front,2020-04-08T14:00.00.000Z
+    Collier,Norton,Johnston,45, "Front,2020-04-08T14:00.00.000Z
     Back,2020-04-08T14:01.00.000Z
     Balcony,2020-04-08T14:05.00.000Z
     Back,2020-04-08T15:00.00.000Z"
-    Baguinon,Elizalde,Gonzales,45, "Front,2020-05-08T04:00.00.000Z
+    Collier,Norton,Johnston,45, "Front,2020-05-08T04:00.00.000Z
     Back,2020-05-08T04:10.00.000Z
     Balcony,2020-05-08T14:20.00.000Z
     Back,2020-05-08T14:50.00.000Z"
