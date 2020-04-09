@@ -80,7 +80,7 @@ but this proposal suggests an appropriate custom header to use: `Content-Schema`
 
 A web service should set this header to the schema format defined below:
 
->`ver:<any>,hdr<true/false>,del:<character>; Column1:<type>,Column2<type>,Column3<type>`
+>`ver:<any>,hdr<true/false>,del:<character>; Column1:<type>,Column2:<type>,Column3:<type>`
 
 A working example is shown below:
 
@@ -114,7 +114,7 @@ Custom headers can also be added. An application can be futher modified to retri
 
 The *column information* is defined as follows:
 
->`Column1:<type>,Column2<type(length)>,Column3<type(precision,scale)>`
+> Column1:<type>,Column2:<type(length)>,Column3:<type(precision,scale)>
 
 The currently supported column types are `string`, `int`, `bool`, `decimal`, `date` and `datetime`.
 
