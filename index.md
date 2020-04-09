@@ -233,5 +233,5 @@ Postman request collection: [https://github.com/eaglebush/WebCSV](https://github
 ## License
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-*Elizalde Baguinon*\
+*Elizalde Baguinon* \
 *April 9, 2020*
