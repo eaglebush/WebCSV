@@ -26,6 +26,10 @@ XML has document type definition (DTD) and XML Schema Definition (XSD). On the o
 It was thought that the structure validation should be up to the implementation of the application that produces and consumes it. 
 Recent developments about a JSON schema suggests that a new draft was just [released](https://json-schema.org/draft/2019-09/json-schema-core.html).
 
+Compared to CSV files, both XML and JSON has to include enclosing identification characters or tags. 
+An XML file, discounting the file header, need at least three (3) characters to open and at least four (4) characters to close. 
+A JSON file, being with no file header, needs one (1) character to open ```({)``` and another character ``(})`` to close.
+
 Structure:
 
 	Content-Schema: 
