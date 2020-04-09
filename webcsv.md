@@ -5,7 +5,7 @@
 
 A CSV or Comma-Separated Values file has been with us since the 1970s and pre-dates personal computers by more than a decade. 
 It is a tabular data format that includes rows and columns. It is written in plain text. In its simplest form, it only
-needs a comma to separate values and a carriage return (Enter key) to indicate a complete line to be a valid CSV file.
+needs a comma to separate values and a carriage return (Enter key) to indicate a complete line.
 
 In this internet and cloud-enabled times, we have standardized structured data interchange formats to enable computing machines to talk to each other.
 
@@ -46,7 +46,7 @@ These are Google's [Protocol Buffers](https://developers.google.com/protocol-buf
 Protocol Buffers is an application layer to serialize data into a binary representation for lightweight transmission of data to be deserialized into structured objects.
 MessagePack also does the same process, but it needs JSON data to be serialized and deserialized.
 
-### WebCSV Name
+### WebCSV
 
 Web Character-Separated Values or WebCSV is the proposed name for this specification. 
 CSV, which casually means Comma Separated Values, can sometimes use a different character for a delimiter. 
