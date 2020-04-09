@@ -227,5 +227,9 @@ Example:
 
 This specification includes a server programmed in Go to better explain the implementation details. A Postman collection for CRUD sample requests is also included.
 
-Sample web service: 
-Postman request collection:
+Sample web service: https://github.com/eaglebush/WebCSV
+
+Postman request collection: https://github.com/eaglebush/WebCSV/tree/master/client
+
+## License
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
