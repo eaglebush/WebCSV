@@ -51,128 +51,175 @@ MessagePack also does the same process, but it needs JSON data to be serialized 
 Web Character-Separated Values or WebCSV is the proposed name for this specification. 
 CSV, which casually means Comma Separated Values, can sometimes use a different character for a delimiter. 
 The tab and pipe characters are commonly used to replace comma. 
-This is the reason why we need to change the `Comma` in the CSV as `Character`.
+This is the reason why we need to change the `Comma` in the CSV as `Character`. 
+`Web` is prepended to the name to signify where it should primarily be used.
+
+### WebCSV and REST
+
+WebCSV is intended to be used for RESTful applications. It can readily be adapted for storing and reading data just like how we use JSON and XML for web services.
+Just like JSON APIs, the transport should be secured (SSL) becase the data is human readable.
+
 
 ### Structure
 
-    A WeB
+Because a CSV structure can be loose, a lightweight schema must be included. 
 
-	Content-Schema: 
+The structure is proposed as follows:
+
+- Schema
+- Body
+
+#### Schema
+
+The WebCSV schema is sent through an HTTP custom header in a REST request. Any header could be set to send this schema for a request, 
+but this proposal suggests an appropriate custom header to use: `Content-Schema`.
+
+> Note: 
+> To save on data, a client program could store the schema in memory and forego with the header request
+> by setting "Content-Schema" to None. The key of the map where the schema is stored could be the
+> endpoint and the path.
+
+A web service should set this header to the schema format defined below:
+
+>`ver:<any>,hdr<true/false>,del:<character>; Column1:<type>,Column2<type>,Column3<type>`
+
+A working example is shown below:
+
+>`ver:1.0,hdr:false,del:,; LastName:string(50),FirstName:string(50),MiddleName:string(50),Age:int,Height:decimal(13,3),Weight:decimal(13,3),Alive:bool,DateBorn:date,LastUpdated:datetime`
+
+There are two parts of the schema. The **schema information** and the **column information**. 
+The first part of the header value is the basic information of the data header. The rest is the column information. 
+The schema parts are delimited by a semicolon (`;`). The space at the rear of the semicolon is not necessary.
+
+##### Schema Information
+
+The *schema information* has basic required data:
+
+- `ver` - Version information. This can be either a [semver](https://semver.org/) or just plain version indication.
+- `hdr` - Data includes column header (for flexibility reasons). Defaults to none. No `hdr` tag would mean the data does not contain column header
+- `del` - Delimiter. The delimiter tag should instruct the client to use the delimiter specified. This defaults to comma `,`. No del tag would mean it is a comma.
+
+Example:
+
+> ver:1.0,hdr:false,del:\t;
+
+Where version is `1.0`, hdr is not included and the delimiter is `tab`.
+
+Custom headers can also be added. An application can be futher modified to retrieve and produce the headers. Some of the suggested headers are:
+
+- `app` - Application id or name
+- `rdt` - Release or last modification date
+- `prs` - Parsing type. Simple CSV or Full CSV file. Simple CSV expects values not to contain commas.
+
+##### Column Information
+
+The *column information* is defined as follows:
+
+>`Column1:<type>,Column2<type(length)>,Column3<type(precision,scale)>`
+
+The currently supported column types are `string`, `int`, `bool`, `decimal`, `date` and `datetime`.
+
+- For `string`s, a length can be defined inside a parenthesis to indicate a limit on the length of the text that a column could handle. The length could be omitted. The length will be defaulted to the 4000 bytes.
+- For `decimal`, the precision and scale should be defined with two values inside a parenthesis separated by a comma.
+- For `bool`, `int`, `date` and `datetime`, no further attributes are required.
+
+> Note:
+> A schema header column can omit the column name, leaving the data type alone
+
+As a side-effect of the column information, the data type for a database table structure could be adapted easily. 
+A table could also be created from the information in the column definition.	
+
+
+#### Body
+
+The WebCSV body comes the payload body of an HTTP request. The payload is a regular CSV data format. Any CSV parser that can handle quoted strings should have no problem parsing it.
+Naturally, the CSV header should be removed from it. The schema column information should be followed to validate the parsed data. If the column names is required, the `hdr` schema information should indicate if column headers should be taken care of.
+			
+Sample: 
+
+```
+Pike,Robert,C,63,8.7,60.6,true,1956-10-08,2020-04-08T14:00:00Z
+Griesemer,Robert,C,25,8.7,8.9,false,1995-09-01,2020-04-08T14:00:00Z
+Smith,John,Porter,65,6.7,6.8,true,1955-08-08,2020-04-08T14:00:00Z
+Chi,Kwan,Tai,35,7.7,20.9,true,1985-11-08,2020-04-08T14:00:00Z
+```
 	
-		Example:
-		
-		ver:1.0,hdr:false,del:\t; LastName:string(50),FirstName:string(50),MiddleName:50,Age:int,Height:decimal(10,3),Alive:bool,DateBorn:date,LastUpdated:datetime
+### Features
 
-		1. Schema is posted and retrieved thru a custom HTTP header called "Content-Schema". 
-			To save on data, a client program could store the schema in memory and forego with the header request
-			by setting "Content-Schema" to None. The key of the map where the schema is stored could be the
-			endpoint and the path.
-			
-			map["http://apis.google.com/v2/login"] = schema
-			
-		2. The first part of the header value is the basic information of the data header. The rest is the header schema itself.
-			Schema parts are isolated by the semicolon (;) delimiter. 
-			
-			ver - Version information
-			hdr - Data includes column header (for flexibility reasons). Defaults to none. No hdr tag would mean the data does not contain column header
-			del - Delimiter. The delimiter tag should instruct the client to use the delimiter specified. This defaults to comma (,). No del tag would mean it is a comma.
-			
-			Custom schema information could be implemented like:
+- Only the data will be sent through the body. This will *save* a lot of bytes on HTTP transport
+- The data columns could be matched against the schema columns sent in the headers on the fly, down to validation of expected data from a loaded desired schema
+- The schema could be mapped to the database structure. It allows the developer to create a table for the CSV data.
+- The data could be a file download. It can directly be stored in a client computer by specifying **Content-Disposition** header
+- The data could be streamed. Each row could be sent one after another until it ends. There is no need to wait for the whole structure to load before parsing
+- The data could be read and written by humans
+
+## Limitations
+
+- The schema and data could not carry hierchical data
+
+## Comparisons
+
+CSV: (258 bytes)
+
+```
+Pike,Robert,C,63,8.7,60.6,true,1956-10-08,2020-04-08T14:00:00Z
+Griesemer,Robert,C,25,8.7,8.9,false,1995-09-01,2020-04-08T14:00:00Z
+Smith,John,Porter,65,6.7,6.8,true,1955-08-08,2020-04-08T14:00:00Z
+Chi,Kwan,Tai,35,7.7,20.9,true,1985-11-08,2020-04-08T14:00:00Z
+```
+		
+JSON: (prettified: 965 bytes, minified: 680 bytes ) 
+```json
+[
+    { "lastname": "Pike", "firstname": "Robert", "middlename": "F", "age": 63, "height": 8.7, "weight": 60.6, "alive": true, "dateborn": "1956-10-08", "lastupdated": "2020-04-08T14:00:00Z" },
+    { "lastname": "Griesemer", "firstname": "Robert", "middlename": "U", "age": 25, "height": 8.7, "weight": 8.9, "alive": false, "dateborn": "1995-09-01", "lastupdated": "2020-04-08T14:00:00Z" },
+    { "lastname": "Smith", "firstname": "John", "middlename": "Porter", "age": 65,"height": 6.7, "weight": 6.8,"alive": true, "dateborn": "1955-08-08", "lastupdated": "2020-04-08T14:00:00Z" },
+    { "lastname": "Chi", "firstname": "Kwan", "middlename": "Tai", "age": 35, "height":7.7, "weight":20.9, "alive": true, "dateborn": "1985-11-08", "lastupdated": "2020-04-08T14:00:00Z"}
+]
+```
+
+## Possible Solution for Hierchical Data
+
+To possibly handle hierchical data in a WebCSV, it can be as told below:
+
+### Add another part on the schema by adding a sub-schema
+
+#### Schema
+
+>`ver:1.0,hdr:false,del:\t; LastName:string(50),FirstName:string(50),MiddleName:50,Age:int,Location:Coordinates; Coordinates:Lng:decimal(15,4),Lat:decimal(15,4)`
+    
+The following schema has the following columns:
+    
+- LastName - string with a length of 50
+- FirstName - string with a length of 50
+- MiddleName - string with a length of 50
+- Age - integer
+- Location - `Coordinates`. The structure for the coordinate is validated on the third part of the schema.
 				
-				app: Application ID or name
-				rdt: Release or last modification date
-                prs: Parsing type. Simple CSV or Full CSV file. Simple CSV expects values not to contain commas.
-			
-		3. A schema header column can omit the data type specification. It will be interpreted as string and the length
-			is unlimited
-			
-		4. A schema column with a length and precision could also validate the data as database validation does
+#### Data
 		
-		5. A schema header column can omit the column name, leaving the data type alone
+CSV supports any character when it is inside the double quotes. When the data in the `Location` column is retrieved, it can be *re-parsed* with a CSV parsing function.
 
-	Body: 
+Example:
 
-		1. Body is a regular CSV data format. Any CSV parser that can handle quoted strings should have no problem
-			parsing it. It should not include the column headers.
-			
-		Sample: 
+> `Baguinon,Elizalde,Gonzales,45,"40.730610,-73.935242"`
 
-			Pike,Robert,C,63,8.7,60.6,true,1956-10-08,2020-04-08T14:00:00Z
-			Griesemer,Robert,C,25,8.7,8.9,false,1995-09-01,2020-04-08T14:00:00Z
-			Smith,John,Porter,65,6.7,6.8,true,1955-08-08,2020-04-08T14:00:00Z
-			Chi,Kwan,Tai,35,7.7,20.9,true,1985-11-08,2020-04-08T14:00:00Z
-	
-	
-Features:
+#### Other Posibilities
+    
+A schema could be an array. Multiple entries are separated by *carriage returns*:
 
-	- Only the data will be sent through the body. This will save a lot of bytes on HTTP transport
-	- The data structure could be matched to the schema sent in the headers
-	- The schema could be optional. Some CSV parsers could automatically detect the data type implied by the columns in the data.
-	- The data could be a file download. It can directly be stored in a client directory by specifying Content-Disposition header
-	- The data could be streamed. Each row could be sent one after another until it ends. There is no need to wait for the whote structure to load before parsing.
-	- The data could be read by humans
-	- The schema could be mapped to the database structure. It allows the developer to create a table for the CSV data.
-	- This specification could be RESTful.
-	
-Limitations:
+> `ver:1.0,hdr:false,del:\t; LastName:string(50),FirstName:string(50),MiddleName:50,Age:int,Entries:Entry; Entry:Door:string(10),Time:timestamp; Entries:[]Entry`
 
-	- The schema and data could not carry hierchical data
-		
-	
-Possible Solution for Hierchical Data:
+Example:
 
-	- Add another part on the schema by adding a sub-schema:
-		Schema:
-		
-			ver:1.0,hdr:false,del:\t; LastName:string(50),FirstName:string(50),MiddleName:50,Age:int,Location:Coordinates; Coordinates:Lng:decimal(15,4),Lat:decimal(15,4)
-			
-			The following schema has the following columns:
-			
-				- LastName - string with a length of 50
-				- FirstName - string with a length of 50
-				- MiddleName - string with a length of 50
-				- Age - integer
-				- Location - Coordinates. The structure for the coordinate is validated on the third part of the schema.
+```
+    Baguinon,Elizalde,Gonzales,45, "Front,2020-04-08T14:00.00.000Z
+    Back,2020-04-08T14:01.00.000Z
+    Balcony,2020-04-08T14:05.00.000Z
+    Back,2020-04-08T15:00.00.000Z"
+    Baguinon,Elizalde,Gonzales,45, "Front,2020-05-08T04:00.00.000Z
+    Back,2020-05-08T04:10.00.000Z
+    Balcony,2020-05-08T14:20.00.000Z
+    Back,2020-05-08T14:50.00.000Z"
+```
 				
-		Data:
-		
-			CSV supports any character when it is inside the double quotes. 
-			When the data in the Location column is retrieved, it can be re-parsed with a CSV parsing function.
-			
-			Example:
-			
-				Baguinon,Elizalde,Gonzales,45,"40.730610,-73.935242"
-	
-			A schema could be an array. Multiple entries are separated by carriage returns:
-			
-				ver:1.0,hdr:false,del:\t; LastName:string(50),FirstName:string(50),MiddleName:50,Age:int,Entries:Entry; Entry:Door:string(10),Time:timestamp; Entries:[]Entry
-	
-			Example:
-			
-				Baguinon,Elizalde,Gonzales,45, "Front,2020-04-08T14:00.00.000Z
-				Back,2020-04-08T14:01.00.000Z
-				Balcony,2020-04-08T14:05.00.000Z
-				Back,2020-04-08T15:00.00.000Z"
-				Baguinon,Elizalde,Gonzales,45, "Front,2020-05-08T04:00.00.000Z
-				Back,2020-05-08T04:10.00.000Z
-				Balcony,2020-05-08T14:20.00.000Z
-				Back,2020-05-08T14:50.00.000Z"
-				
-Comparison:
-
-	CSV: 258 bytes
-	
-		Pike,Robert,C,63,8.7,60.6,true,1956-10-08,2020-04-08T14:00:00Z
-		Griesemer,Robert,C,25,8.7,8.9,false,1995-09-01,2020-04-08T14:00:00Z
-		Smith,John,Porter,65,6.7,6.8,true,1955-08-08,2020-04-08T14:00:00Z
-		Chi,Kwan,Tai,35,7.7,20.9,true,1985-11-08,2020-04-08T14:00:00Z
-		
-	JSON: (prettified: 965 bytes, minified: 680 bytes ) 
-		[
-			{ "lastname": "Pike", "firstname": "Robert", "middlename": "F", "age": 63, "height": 8.7, "weight": 60.6, "alive": true, "dateborn": "1956-10-08", "lastupdated": "2020-04-08T14:00:00Z" },
-			{ "lastname": "Griesemer", "firstname": "Robert", "middlename": "U", "age": 25, "height": 8.7, "weight": 8.9, "alive": false, "dateborn": "1995-09-01", "lastupdated": "2020-04-08T14:00:00Z" },
-			{ "lastname": "Smith", "firstname": "John", "middlename": "Porter", "age": 65,"height": 6.7, "weight": 6.8,"alive": true, "dateborn": "1955-08-08", "lastupdated": "2020-04-08T14:00:00Z" },
-			{ "lastname": "Chi", "firstname": "Kwan", "middlename": "Tai", "age": 35, "height":7.7, "weight":20.9, "alive": true, "dateborn": "1985-11-08", "lastupdated": "2020-04-08T14:00:00Z"}
-		]
-Notes:
-	- Just like JSON APIs, the transport should be secured (SSL) becase the data is human readable.
