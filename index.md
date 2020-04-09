@@ -1,5 +1,5 @@
-# WebCSV Specification Proposal
-## Web Character Separated Values (WebCSV)
+# WebCSV
+## WebCSV - A Proposal to use CSV for Data Interchange
 
 ### Introduction
 
