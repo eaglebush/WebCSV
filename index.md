@@ -1,7 +1,6 @@
-# WebCSV:  A Proposal to Use CSV for Data Interchange
-*April 9, 2020*
+# WebCSV:  A Proposal to Use CSV for Web Data Interchange
 
-### Introduction
+## Introduction
 
 A CSV or Comma-Separated Values file has been with us since the 1970s and pre-dates personal computers by more than a decade. 
 It is a tabular data format that includes rows and columns. It is written in plain text. In its simplest form, it only
@@ -46,21 +45,21 @@ These are Google's [Protocol Buffers](https://developers.google.com/protocol-buf
 Protocol Buffers is an application layer to serialize data into a binary representation for lightweight transmission of data to be deserialized into structured objects.
 MessagePack also does the same process, but it needs JSON data to be serialized and deserialized.
 
-### WebCSV
+## WebCSV
 
 Web Character-Separated Values or WebCSV is the proposed name for this specification. 
-CSV, which casually means Comma Separated Values, can sometimes use a different character for a delimiter. 
+CSV, which casually means Comma-Separated Values, can sometimes use a different character for a delimiter. 
 The tab and pipe characters are commonly used to replace comma. 
 This is the reason why we need to change the `Comma` in the CSV as `Character`. 
 `Web` is prepended to the name to signify where it should primarily be used.
 
-### WebCSV and REST
+## WebCSV and REST
 
 WebCSV is intended to be used for RESTful applications. It can readily be adapted for storing and reading data just like how we use JSON and XML for web services.
 Just like JSON APIs, the transport should be secured (SSL) becase the data is human readable.
 
 
-### Structure
+## Structure
 
 Because a CSV structure can be loose, a lightweight schema must be included. 
 
@@ -69,7 +68,7 @@ The structure is proposed as follows:
 - Schema
 - Body
 
-#### Schema
+### Schema
 
 The WebCSV schema is sent through an HTTP custom header in a REST request. Any header could be set to send this schema for a request, 
 but this proposal suggests an appropriate custom header to use: `Content-Schema`.
@@ -91,7 +90,7 @@ There are two parts of the schema. The **schema information** and the **column i
 The first part of the header value is the basic information of the data header. The rest is the column information. 
 The schema parts are delimited by a semicolon (`;`). The space at the rear of the semicolon is not necessary.
 
-##### Schema Information
+#### Schema Information
 
 The *schema information* has basic required data:
 
@@ -111,7 +110,7 @@ Custom headers can also be added. An application can be futher modified to retri
 - `rdt` - Release or last modification date
 - `prs` - Parsing type. Simple CSV or Full CSV file. Simple CSV expects values not to contain commas.
 
-##### Column Information
+#### Column Information
 
 The *column information* is defined as follows:
 
@@ -130,7 +129,7 @@ As a side-effect of the column information, the data type for a database table s
 A table could also be created from the information in the column definition.	
 
 
-#### Body
+### Body
 
 The WebCSV body comes the payload body of an HTTP request. The payload is a regular CSV data format. Any CSV parser that can handle quoted strings should have no problem parsing it.
 Naturally, the CSV header should be removed from it. The schema column information should be followed to validate the parsed data. If the column names is required, the `hdr` schema information should indicate if column headers should be taken care of.
@@ -144,7 +143,7 @@ Smith,John,Porter,65,6.7,6.8,true,1955-08-08,2020-04-08T14:00:00Z
 Chi,Kwan,Tai,35,7.7,20.9,true,1985-11-08,2020-04-08T14:00:00Z
 ```
 	
-### Features
+## Features
 
 - Only the data will be sent through the body. This will *save* a lot of bytes on HTTP transport
 - The data columns could be matched against the schema columns sent in the headers on the fly, down to validation of expected data from a loaded desired schema
@@ -233,3 +232,6 @@ Postman request collection: [https://github.com/eaglebush/WebCSV](https://github
 
 ## License
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
+*Elizalde Baguinon*\
+*April 9, 2020*
