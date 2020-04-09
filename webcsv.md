@@ -1,5 +1,7 @@
-## WebCSV Specification Proposal
-### Web Character Separated Values (CSV)
+# WebCSV Specification Proposal
+## Web Character Separated Values (WebCSV)
+
+### Introduction
 
 A CSV or Comma-Separated Values file has been with us since the 1970s and pre-dates personal computers by more than a decade. 
 It is a tabular data format that includes rows and columns. It is written in plain text. In its simplest form, it only
@@ -28,9 +30,32 @@ Recent developments about a JSON schema suggests that a new draft was just [rele
 
 Compared to CSV files, both XML and JSON has to include enclosing identification characters or tags. 
 An XML file, discounting the file header, need at least three (3) characters to open and at least four (4) characters to close. 
-A JSON file, being with no file header, needs one (1) character to open ```({)``` and another character ``(})`` to close.
+Each node down the hierarchy needs to have these closing tags.
+A JSON file, being with no file header, needs one character to open (`{`) and another character (`}`) to close.
+Each value being represented needs to have a name, enclosed in double quotes and terminated in colon. 
+If the value is a text type, it also needs to be enclosed in double quotes.
+CSV, only needs to be delimited by commas for its columns and carriage returns for its rows. 
+A full CSV implementation would only need double quotes to enclose values that includes the delimiter character, by default, a comma.
 
-Structure:
+When it comes to byte savings on disk and on the wire, CSV comes first, JSON and then XML. 
+
+This is how the idea of using CSV as an alternative data interchange format came up.
+
+Other data interchange formats has been introduced recently to minimize data traffic. 
+These are Google's [Protocol Buffers](https://developers.google.com/protocol-buffers) and Sadayuki Furuhashi's [MessagePack](https://msgpack.org/). However, these are not file formats. 
+Protocol Buffers is an application layer to serialize data into a binary representation for lightweight transmission of data to be deserialized into structured objects.
+MessagePack also does the same process, but it needs JSON data to be serialized and deserialized.
+
+### WebCSV Name
+
+Web Character-Separated Values or WebCSV is the proposed name for this specification. 
+CSV, which casually means Comma Separated Values, can sometimes use a different character for a delimiter. 
+The tab and pipe characters are commonly used to replace comma. 
+This is the reason why we need to change the `Comma` in the CSV as `Character`.
+
+### Structure
+
+    A WeB
 
 	Content-Schema: 
 	
@@ -56,6 +81,7 @@ Structure:
 				
 				app: Application ID or name
 				rdt: Release or last modification date
+                prs: Parsing type. Simple CSV or Full CSV file. Simple CSV expects values not to contain commas.
 			
 		3. A schema header column can omit the data type specification. It will be interpreted as string and the length
 			is unlimited
