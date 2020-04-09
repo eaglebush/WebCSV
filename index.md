@@ -158,6 +158,8 @@ Chi,Kwan,Tai,35,7.7,20.9,true,1985-11-08,2020-04-08T14:00:00Z
 
 ## Comparisons
 
+The essential data on data interchange formats below is compared. When the data goes up, the data descriptors also goes up. Please see comparisons below:
+
 CSV: (**258** bytes)
 
 ```
