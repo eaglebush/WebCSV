@@ -177,6 +177,57 @@ JSON: (prettified: **965** bytes, minified: **680** bytes )
 ]
 ```
 
+XML: (prettified: **1,058**, minified: **1,344**)
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<root>
+   <element>
+      <age>63</age>
+      <alive>true</alive>
+      <dateborn>1956-10-08</dateborn>
+      <firstname>Robert</firstname>
+      <height>8.7</height>
+      <lastname>Pike</lastname>
+      <lastupdated>2020-04-08T14:00:00Z</lastupdated>
+      <middlename>F</middlename>
+      <weight>60.6</weight>
+   </element>
+   <element>
+      <age>25</age>
+      <alive>false</alive>
+      <dateborn>1995-09-01</dateborn>
+      <firstname>Robert</firstname>
+      <height>8.7</height>
+      <lastname>Griesemer</lastname>
+      <lastupdated>2020-04-08T14:00:00Z</lastupdated>
+      <middlename>U</middlename>
+      <weight>8.9</weight>
+   </element>
+   <element>
+      <age>65</age>
+      <alive>true</alive>
+      <dateborn>1955-08-08</dateborn>
+      <firstname>John</firstname>
+      <height>6.7</height>
+      <lastname>Smith</lastname>
+      <lastupdated>2020-04-08T14:00:00Z</lastupdated>
+      <middlename>Porter</middlename>
+      <weight>6.8</weight>
+   </element>
+   <element>
+      <age>35</age>
+      <alive>true</alive>
+      <dateborn>1985-11-08</dateborn>
+      <firstname>Kwan</firstname>
+      <height>7.7</height>
+      <lastname>Chi</lastname>
+      <lastupdated>2020-04-08T14:00:00Z</lastupdated>
+      <middlename>Tai</middlename>
+      <weight>20.9</weight>
+   </element>
+</root>
+```
+
 ## Possible Solution for Hierchical Data
 
 To possibly handle hierchical data in a WebCSV, it can be as told below:
@@ -230,8 +281,12 @@ Sample web service: [https://github.com/eaglebush/WebCSV](https://github.com/eag
 
 Postman request collection: [https://github.com/eaglebush/WebCSV](https://github.com/eaglebush/WebCSV/tree/master/client)
 
+## Acknowledgements
+
+[UTF-8 string length & byte counter](https://mothereff.in/byte-counter)
+
 ## License
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-*Elizalde Baguinon* \
-*April 9, 2020*
+*Elizalde Baguinon,
+April 9, 2020*
