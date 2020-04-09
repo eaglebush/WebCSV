@@ -56,7 +56,7 @@ This is the reason why we need to change the `Comma` in the CSV as `Character`.
 ## WebCSV and REST
 
 WebCSV is intended to be used for RESTful applications. It can readily be adapted for storing and reading data just like how we use JSON and XML for web services.
-Just like JSON APIs, the transport should be secured (SSL) becase the data is human readable.
+Just like JSON APIs, the transport should be secured (SSL) because the data is human readable.
 
 
 ## Structure
@@ -71,7 +71,7 @@ The structure is proposed as follows:
 ### Schema
 
 The WebCSV schema is sent through an HTTP custom header in a REST request. Any header could be set to send this schema for a request, 
-but this proposal suggests an appropriate custom header to use: `Content-Schema`.
+but a new custom header `Content-Schema` could be used to be appropriate.
 
 > Note: 
 > To save on data, a client program could store the schema in memory and forego with the header request
@@ -87,8 +87,8 @@ A working example is shown below:
 >`ver:1.0,hdr:false,del:,; LastName:string(50),FirstName:string(50),MiddleName:string(50),Age:int,Height:decimal(13,3),Weight:decimal(13,3),Alive:bool,DateBorn:date,LastUpdated:datetime`
 
 There are two parts of the schema. The **schema information** and the **column information**. 
-The first part of the header value is the basic information of the data header. The rest is the column information. 
-The schema parts are delimited by a semicolon (`;`). The space at the rear of the semicolon is not necessary.
+The first part of the header value is the basic information of the data header. The rest are the column information. 
+The schema parts are delimited by a semicolon (`;`).
 
 #### Schema Information
 
@@ -104,7 +104,7 @@ Example:
 
 Where version is `1.0`, hdr is not included and `tab` delimited.
 
-Custom headers can also be added. An application can be futher modified to retrieve and produce the headers. Some of the suggested headers are:
+Custom headers can also be added. An application can be further modified to retrieve and produce the headers. Some of the suggested headers are:
 
 - `app` - Application id or name
 - `rdt` - Release or last modification date
@@ -118,7 +118,7 @@ The *column information* is defined as follows:
 
 The currently supported column types are `string`, `int`, `bool`, `decimal`, `date` and `datetime`.
 
-- For `string`s, a length can be defined inside a parenthesis to indicate a limit on the length of the text that a column could handle. The length could be omitted. The length will be defaulted to the 4000 bytes.
+- For `string`s, a length can be defined inside a parenthesis to indicate a limit on the length of the text that a column could handle. If the length is omitted, the length will be set to 4000 bytes.
 - For `decimal`, the precision and scale should be defined with two values inside a parenthesis separated by a comma.
 - For `bool`, `int`, `date` and `datetime`, no further attributes are required.
 
@@ -126,13 +126,12 @@ The currently supported column types are `string`, `int`, `bool`, `decimal`, `da
 > A schema column information can omit the column name, leaving the data type alone
 
 As a side-effect of the column information, the data type for a database table structure could be adapted easily. 
-A table could also be created from the information in the column definition.	
-
+The column definitions could be used to create a simple table in a database.
 
 ### Body
 
-The WebCSV body comes the payload body of an HTTP request. The payload is a regular CSV data format. Any CSV parser that can handle quoted strings should have no problem parsing it.
-Naturally, the CSV header should be removed from it. The schema column information should be followed to validate the parsed data. If the column names is required, the `hdr` schema information should indicate if column headers should be taken care of.
+The body comes the payload of an HTTP request. The payload is a regular CSV data format. Any CSV parser that can handle quoted strings should have no problem parsing it.
+The CSV column headers should be removed if the `hdr` schema flag is set to false. To validate the parsed data, the schema column information can be used. 
 			
 Sample: 
 
@@ -158,7 +157,7 @@ Chi,Kwan,Tai,35,7.7,20.9,true,1985-11-08,2020-04-08T14:00:00Z
 
 ## Comparisons
 
-The essential data on data interchange formats below is compared. When the data goes up, the data descriptors also goes up. Please see comparisons below:
+If we only wanted to retrieve the essential data, the above mentioned data formats would yield the number of bytes from a CSV sample. Please see comparisons below:
 
 CSV: (**258** bytes)
 
@@ -230,9 +229,19 @@ XML: (prettified: **1,058**, minified: **1,344**)
 </root>
 ```
 
+As you can see, when the essential data goes up, the data descriptors in JSON and XML also goes up. The CSV sample data is the leanest of them all.
+				
+## Proof of Concept
+
+This proposal specification includes a server programmed in Go to better explain the implementation details. A Postman collection for CRUD sample requests is also included.
+
+Sample web service: [https://github.com/eaglebush/WebCSV](https://github.com/eaglebush/WebCSV)
+
+Postman request collection: [https://github.com/eaglebush/WebCSV](https://github.com/eaglebush/WebCSV/tree/master/client)
+
 ## Possible Solution for Hierchical Data
 
-To possibly handle hierchical data in a WebCSV, it can be as told below:
+To simplify the proposal, the Limitation section stated that the CSV data format cannot handle hierchical data. But by expanding the schema and sub-parsing, the mechanism to handle hierchical data in a WebCSV can be done.
 
 ### Add another part on the schema by adding a sub-schema
 
@@ -274,14 +283,6 @@ Example:
     Balcony,2020-05-08T14:20.00.000Z
     Back,2020-05-08T14:50.00.000Z"
 ```
-				
-## Proof of Concept
-
-This specification includes a server programmed in Go to better explain the implementation details. A Postman collection for CRUD sample requests is also included.
-
-Sample web service: [https://github.com/eaglebush/WebCSV](https://github.com/eaglebush/WebCSV)
-
-Postman request collection: [https://github.com/eaglebush/WebCSV](https://github.com/eaglebush/WebCSV/tree/master/client)
 
 ## Acknowledgements
 
