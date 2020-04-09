@@ -1,5 +1,5 @@
 # WebCSV
-## WebCSV - A Proposal to use CSV for Data Interchange
+## A Proposal to Use CSV for Data Interchange
 
 ### Introduction
 
