@@ -285,7 +285,9 @@ Postman request collection: [https://github.com/eaglebush/WebCSV](https://github
 
 ## Acknowledgements
 
-[UTF-8 string length & byte counter](https://mothereff.in/byte-counter)
+- [MotherEff UTF-8 string length & byte counter](https://mothereff.in/byte-counter)
+- [FreeFormatter.com](https://www.freeformatter.com/json-to-xml-converter.html)
+- [Web Toolkit Online](https://www.webtoolkitonline.com/xml-minifier.html)
 
 ## License
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
