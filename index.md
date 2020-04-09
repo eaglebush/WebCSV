@@ -178,7 +178,7 @@ JSON: (prettified: **965** bytes, minified: **680** bytes )
 ]
 ```
 
-XML: (prettified: **1,058**, minified: **1,344**)
+XML: (prettified: **1,344**, minified: **1,058**)
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <root>
