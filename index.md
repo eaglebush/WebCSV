@@ -237,7 +237,7 @@ This proposal specification includes a server programmed in Go to better explain
 
 Sample web service: [https://github.com/eaglebush/WebCSV](https://github.com/eaglebush/WebCSV)
 
-Postman request collection: [https://github.com/eaglebush/WebCSV](https://github.com/eaglebush/WebCSV/tree/master/client)
+Postman request collection: [https://github.com/eaglebush/WebCSV/tree/master/client](https://github.com/eaglebush/WebCSV/tree/master/client)
 
 ## Possible Solution for Hierchical Data
 
