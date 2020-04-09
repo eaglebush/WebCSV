@@ -1,5 +1,5 @@
-WebCSV Specification Proposal
-Web Character Separated Values (CSV)
+##WebCSV Specification Proposal
+###Web Character Separated Values (CSV)
 
     A CSV or Comma-Separated Values file has been with us since the 1970s and pre-dates personal computers by more than a decade. 
     It is a tabular data format that includes rows and columns. It is written in plain text. In its simplest form, it only
