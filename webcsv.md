@@ -103,7 +103,7 @@ Example:
 
 > ver:1.0,hdr:false,del:\t;
 
-Where version is `1.0`, hdr is not included and the delimiter is `tab`.
+Where version is `1.0`, hdr is not included and `tab` delimited.
 
 Custom headers can also be added. An application can be futher modified to retrieve and produce the headers. Some of the suggested headers are:
 
@@ -124,7 +124,7 @@ The currently supported column types are `string`, `int`, `bool`, `decimal`, `da
 - For `bool`, `int`, `date` and `datetime`, no further attributes are required.
 
 > Note:
-> A schema header column can omit the column name, leaving the data type alone
+> A schema column information can omit the column name, leaving the data type alone
 
 As a side-effect of the column information, the data type for a database table structure could be adapted easily. 
 A table could also be created from the information in the column definition.	
@@ -159,7 +159,7 @@ Chi,Kwan,Tai,35,7.7,20.9,true,1985-11-08,2020-04-08T14:00:00Z
 
 ## Comparisons
 
-CSV: (258 bytes)
+CSV: (**258** bytes)
 
 ```
 Pike,Robert,C,63,8.7,60.6,true,1956-10-08,2020-04-08T14:00:00Z
@@ -168,7 +168,7 @@ Smith,John,Porter,65,6.7,6.8,true,1955-08-08,2020-04-08T14:00:00Z
 Chi,Kwan,Tai,35,7.7,20.9,true,1985-11-08,2020-04-08T14:00:00Z
 ```
 		
-JSON: (prettified: 965 bytes, minified: 680 bytes ) 
+JSON: (prettified: **965** bytes, minified: **680** bytes ) 
 ```json
 [
     { "lastname": "Pike", "firstname": "Robert", "middlename": "F", "age": 63, "height": 8.7, "weight": 60.6, "alive": true, "dateborn": "1956-10-08", "lastupdated": "2020-04-08T14:00:00Z" },
@@ -190,15 +190,15 @@ To possibly handle hierchical data in a WebCSV, it can be as told below:
     
 The following schema has the following columns:
     
-- LastName - string with a length of 50
-- FirstName - string with a length of 50
-- MiddleName - string with a length of 50
-- Age - integer
-- Location - `Coordinates`. The structure for the coordinate is validated on the third part of the schema.
+- `LastName` - string with a length of 50
+- `FirstName` - string with a length of 50
+- `MiddleName` - string with a length of 50
+- `Age` - integer
+- `Location` - `Coordinates`. The structure for the coordinate is validated on the third part of the schema.
 				
 #### Data
 		
-CSV supports any character when it is inside the double quotes. When the data in the `Location` column is retrieved, it can be *re-parsed* with a CSV parsing function.
+CSV supports any printable character when it is inside the double quotes. When the data in the `Location` column is retrieved, it can be *re-parsed* with a CSV parsing function.
 
 Example:
 
@@ -223,3 +223,9 @@ Example:
     Back,2020-05-08T14:50.00.000Z"
 ```
 				
+## Proof of Concept
+
+This specification includes a server programmed in Go to better explain the implementation details. A Postman collection for CRUD sample requests is also included.
+
+Sample web service: 
+Postman request collection:
