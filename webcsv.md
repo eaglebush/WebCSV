@@ -1,30 +1,30 @@
 ## WebCSV Specification Proposal
 ### Web Character Separated Values (CSV)
 
-    A CSV or Comma-Separated Values file has been with us since the 1970s and pre-dates personal computers by more than a decade. 
-    It is a tabular data format that includes rows and columns. It is written in plain text. In its simplest form, it only
-    needs a comma to separate values and a carriage return (Enter key) to indicate a complete line to be a valid CSV file.
+A CSV or Comma-Separated Values file has been with us since the 1970s and pre-dates personal computers by more than a decade. 
+It is a tabular data format that includes rows and columns. It is written in plain text. In its simplest form, it only
+needs a comma to separate values and a carriage return (Enter key) to indicate a complete line to be a valid CSV file.
 
-    In this internet and cloud-enabled times, we have standardized structured data interchange formats to enable computing machines to talk to each other.
-    
-    XML, or eXtensible Markup Language is designed to emphasize simplicity, generality, and usability across the Internet. 
-    An XML file is expected to describe what data is inside it by using tags, attributes and node hierachy. The values are mostly contained
-    inside their nodes. To know more about XML, please [read](https://www.w3.org/XML/) it on W3C website.
+In this internet and cloud-enabled times, we have standardized structured data interchange formats to enable computing machines to talk to each other.
 
-    JSON, or Javascript Object Notation is also one of the popular internet exchange formats. A JSON file, just like XML, also describes the 
-    data it contains by including its name in opposite of its value. It is also a structured data interchange format. To know more about JSON,
-    please [read](https://www.json.org/json-en.html) on their website.
+XML, or eXtensible Markup Language is designed to emphasize simplicity, generality, and usability across the Internet. 
+An XML file is expected to describe what data is inside it by using tags, attributes and node hierachy. The values are mostly contained
+inside their nodes. To know more about XML, please [read](https://www.w3.org/XML/) it on W3C website.
 
-    Both XML and JSON are human and machine readable files. This means that you can read the parameters and values inside it, and you can also write it
-    in any text processor you can get your hands on. Both formats can be validated for completeness. For XML files, a basic validation could be done by 
-    looking the root opening and end tags if it is present. For JSON files, a basic validation could be done by looking the opening and ending curly braces.
-    Both needs to have a parser and a syntax checker to safely flag a file as valid. 
+JSON, or Javascript Object Notation is also one of the popular internet exchange formats. A JSON file, just like XML, also describes the 
+data it contains by including its name in opposite of its value. It is also a structured data interchange format. To know more about JSON,
+please [read](https://www.json.org/json-en.html) on their website.
 
-    While both can be syntactically valid, data structure validation is also required to check the integrity of the document. 
-    This is to ensure that the file conforms to the expected data structure, aside from identifying what the file was for.
-    XML has document type definition (DTD) and XML Schema Definition (XSD). On the other hand, JSON, earlier has no data structure validation. 
-    It was thought that the structure validation should be up to the implementation of the application that produces and consumes it. 
-    Recent developments about a JSON schema suggests that a new draft was just [released](https://json-schema.org/draft/2019-09/json-schema-core.html).
+Both XML and JSON are human and machine readable files. This means that you can read the parameters and values inside it, and you can also write it
+in any text processor you can get your hands on. Both formats can be validated for completeness. For XML files, a basic validation could be done by 
+looking the root opening and end tags if it is present. For JSON files, a basic validation could be done by looking the opening and ending curly braces.
+Both needs to have a parser and a syntax checker to safely flag a file as valid. 
+
+While both can be syntactically valid, data structure validation is also required to check the integrity of the document. 
+This is to ensure that the file conforms to the expected data structure, aside from identifying what the file was for.
+XML has document type definition (DTD) and XML Schema Definition (XSD). On the other hand, JSON, earlier has no data structure validation. 
+It was thought that the structure validation should be up to the implementation of the application that produces and consumes it. 
+Recent developments about a JSON schema suggests that a new draft was just [released](https://json-schema.org/draft/2019-09/json-schema-core.html).
 
 Structure:
 
