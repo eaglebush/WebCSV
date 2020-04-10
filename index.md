@@ -80,11 +80,11 @@ but a new custom header `Content-Schema` could be used to be appropriate.
 
 A web service should set this header to the schema format defined below:
 
->`ver:<any>,hdr<true/false>,del:<character>; Column1:<type>,Column2:<type>,Column3:<type>`
+    ver:<any>,hdr<true/false>,del:<character>; Column1:<type>,Column2:<type>,Column3:<type>
 
 A working example is shown below:
 
->`ver:1.0,hdr:false,del:,; LastName:string(50),FirstName:string(50),MiddleName:string(50),Age:int,Height:decimal(13,3),Weight:decimal(13,3),Alive:bool,DateBorn:date,LastUpdated:datetime`
+    ver:1.0,hdr:false,del:,; LastName:string(50),FirstName:string(50),MiddleName:string(50),Age:int,Height:decimal(13,3),Weight:decimal(13,3),Alive:bool,DateBorn:date,LastUpdated:datetime
 
 There are two parts of the schema. The **schema information** and the **column information**. 
 The first part of the header value is the basic information of the data header. The rest are the column information. 
@@ -247,7 +247,7 @@ To simplify the proposal, the Limitation section stated that the CSV data format
 
 #### Schema
 
->`ver:1.0,hdr:false,del:\t; LastName:string(50),FirstName:string(50),MiddleName:50,Age:int,Location:Coordinates; Coordinates:Lng:decimal(15,4),Lat:decimal(15,4)`
+    ver:1.0,hdr:false,del:\t; LastName:string(50),FirstName:string(50),MiddleName:50,Age:int,Location:Coordinates; Coordinates:Lng:decimal(15,4),Lat:decimal(15,4)
     
 The following schema has the following columns:
     
@@ -269,7 +269,7 @@ Example:
     
 A schema could be an array. Multiple entries are separated by *carriage returns*:
 
-> `ver:1.0,hdr:false,del:\t; LastName:string(50),FirstName:string(50),MiddleName:50,Age:int,Entries:Entry; Entry:Door:string(10),Time:timestamp; Entries:[]Entry`
+> `ver:1.0,hdr:false,del:\t; LastName:string(50),FirstName:string(50),MiddleName:50,Age:int,Entries:Entry; Entry:Door:string(10),Time:datetime; Entries:[]Entry`
 
 Example:
 
