@@ -235,9 +235,9 @@ As you can see, when the essential data goes up, the data descriptors in JSON an
 
 This proposal specification includes a server programmed in Go to better explain the implementation details. A Postman collection for CRUD sample requests is also included.
 
-Sample web service: [https://github.com/eaglebush/WebCSV](https://github.com/eaglebush/WebCSV)
+Sample web service: [https://github.com/eaglebush/WebCSVSample](https://github.com/eaglebush/WebCSVSample)
 
-Postman request collection: [https://github.com/eaglebush/WebCSV/tree/master/client](https://github.com/eaglebush/WebCSV/tree/master/client)
+Postman request collection: [https://github.com/eaglebush/WebCSVSample/tree/master/client](https://github.com/eaglebush/WebCSVSample/tree/master/client)
 
 ## Possible Solution for Hierchical Data
 
